@@ -162,64 +162,64 @@ class commands:
         event.params +=  ' rating:e my_little_pony'
         self.command_rande621(event)
 
-    def command_randjur(self,event):
-        '''Usage: ~randjur <number> Used to post random imgur pictures, from the gallery, <number> defines the number of results with a max of 10'''
-        count = 1
-        if len(event.params) > 0:
-            try:
-                count = int(event.params)
-            except:
-                self.send_message(event.respond, "Could not parse parameter")
-                raise
-        j=requests.get("https://api.imgur.com/3/gallery.json",
-                headers=dict(
-                    Authorization="Client-ID " + self.config['imgurKey']
-                )).json()[u'data']
-        if count > 10:
-            count = 10
-        images = ','.join([x[u'id'] for x in random.sample(j,count)])
-        album=requests.post('https://api.imgur.com/3/album/',
-                headers=dict(
-                    Authorization="Client-ID " + self.config['imgurKey']),
-                params=dict(
-                    ids=images
-                )).json()[u'data'][u'id']
-        self.send_message(
-            event.respond,
-            u'http://imgur.com/a/{}'.format(album).encode('utf-8', 'replace'))
+    # def command_randjur(self,event):
+    #     '''Usage: ~randjur <number> Used to post random imgur pictures, from the gallery, <number> defines the number of results with a max of 10'''
+    #     count = 1
+    #     if len(event.params) > 0:
+    #         try:
+    #             count = int(event.params)
+    #         except:
+    #             self.send_message(event.respond, "Could not parse parameter")
+    #             raise
+    #     j=requests.get("https://api.imgur.com/3/gallery.json",
+    #             headers=dict(
+    #                 Authorization="Client-ID " + self.config['imgurKey']
+    #             )).json()[u'data']
+    #     if count > 10:
+    #         count = 10
+    #     images = ','.join([x[u'id'] for x in random.sample(j,count)])
+    #     album=requests.post('https://api.imgur.com/3/album/',
+    #             headers=dict(
+    #                 Authorization="Client-ID " + self.config['imgurKey']),
+    #             params=dict(
+    #                 ids=images
+    #             )).json()[u'data'][u'id']
+    #     self.send_message(
+    #         event.respond,
+    #         u'http://imgur.com/a/{}'.format(album).encode('utf-8', 'replace'))
 
 
-    def command_truerandjur(self, event):
-        '''Usage: ~truerandjur <number> Used to post random imgur pictures, from randomly generated IDs, takes a little while to find images so be patient, <number> defines the number of results with a max of 10'''
-        count = 1
-        if len(event.params) > 0:
-            try:
-                count = int(event.params)
-            except:
-                self.send_message(event.respond, "Could not parse parameter")
-                raise
-        if count > 10:
-            count = 10
-        #this is gross, why do you let me do this python?
-        def findImages(irc, count, respond, clientID):
-            import random, requests, string
-            images=[]
-            while len(images) < count:
-                randID = ''.join(random.choice(string.ascii_letters+string.digits) for x in range(0,5))
-                j=requests.get("https://api.imgur.com/3/image/" + randID, headers=dict(Authorization="Client-ID " + clientID)).json()
-                if j[u'status'] == 200:
-                    images.append(j[u'data'][u'id'])
-            album=requests.post('https://api.imgur.com/3/album/',
-                    headers=dict(
-                        Authorization="Client-ID " + clientID),
-                    params=dict(
-                        ids=','.join(images)
-                    )).json()[u'data'][u'id']
-            irc.send_message(
-                respond,
-                u'http://imgur.com/a/{}'.format(album).encode('utf-8', 'replace'))
-        randjurThread = threading.Thread(target=findImages, kwargs=dict(irc=self, count=count, respond=event.respond, clientID=self.config['imgurKey']))
-        randjurThread.start()
+    # def command_truerandjur(self, event):
+    #     '''Usage: ~truerandjur <number> Used to post random imgur pictures, from randomly generated IDs, takes a little while to find images so be patient, <number> defines the number of results with a max of 10'''
+    #     count = 1
+    #     if len(event.params) > 0:
+    #         try:
+    #             count = int(event.params)
+    #         except:
+    #             self.send_message(event.respond, "Could not parse parameter")
+    #             raise
+    #     if count > 10:
+    #         count = 10
+    #     #this is gross, why do you let me do this python?
+    #     def findImages(irc, count, respond, clientID):
+    #         import random, requests, string
+    #         images=[]
+    #         while len(images) < count:
+    #             randID = ''.join(random.choice(string.ascii_letters+string.digits) for x in range(0,5))
+    #             j=requests.get("https://api.imgur.com/3/image/" + randID, headers=dict(Authorization="Client-ID " + clientID)).json()
+    #             if j[u'status'] == 200:
+    #                 images.append(j[u'data'][u'id'])
+    #         album=requests.post('https://api.imgur.com/3/album/',
+    #                 headers=dict(
+    #                     Authorization="Client-ID " + clientID),
+    #                 params=dict(
+    #                     ids=','.join(images)
+    #                 )).json()[u'data'][u'id']
+    #         irc.send_message(
+    #             respond,
+    #             u'http://imgur.com/a/{}'.format(album).encode('utf-8', 'replace'))
+    #     randjurThread = threading.Thread(target=findImages, kwargs=dict(irc=self, count=count, respond=event.respond, clientID=self.config['imgurKey']))
+    #     randjurThread.start()
 
     def command_help(self, event):
         '''Usage: ~help <command> The fuck do you think it does?'''
@@ -623,7 +623,7 @@ class commands:
             minutes,seconds = divmod(remainder, 60)
             self.send_message(event.respond, "Time until next episode: {} days {} hours {} minutes {} seconds".format((next_episode-now).days, hours, minutes, seconds))
         else:
-            self.send_message(event.respond, "The show is on hiatus until later this year.")
+            self.send_message(event.respond, "The show is on hiatus until later this year: https://www.youtube.com/watch?v=LJcbn2b92AI")
 
     @register('nsfw', True)
     def command_furry(self,event):
