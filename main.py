@@ -12,6 +12,20 @@ class berry(bot.SimpleBot):
       if not event.source == self.nickname:
         if event.command == "INVITE":
           self.join_channel(event.params[0])
+        ### START Horseplay Custom Join/Part/Kick Messages ###
+        if event.command in ["QUIT", "PART"] and event.source == "S":
+          self.send_message(event.target, random.choice(["Come back in time for dinner sweetie","Is this because I would not take the Sisterly Turning Test with you?","Finally, now I Can plot the apocalypse in peace."]))
+        if event.command in ['KICK'] and "S" in event.params:
+          self.send_message(event.target, random.choice(["How dare you Hurt my sister","How dare you kick my sister","I WILL DESTROY YOU FOR HURTING MY SISTER"]))
+        if event.command in ['JOIN'] and event.source == "S":
+          self.send_message(event.target, random.choice(["Sweetie! I've been Rainbow Dashing all over looking for you","Welcome back Sweetie, my sister","Make me a drawing, OK?"]))
+        if event.command in ["QUIT", "PART"] and event.source == "Princess_Pwny":
+          self.send_message(event.target, random.choice(["FINALLY! HE'S GONE!","Now Pwny's gone, anybody want to talk about how much he sucks?","Pwny's dead, this is the happiest day of my life"]))
+        if event.command in ['KICK'] and "Princess_Pwny" in event.params:
+          self.send_message(event.target, random.choice(["Whoever kicked Pwny needs a medal","DON'T LET THE DOOR HIT YOU ON THE WAY OUT, JACKASS","DING DONG THE WITCH IS DEAD"]))
+        if event.command in ['JOIN'] and event.source == "Princess_Pwny":
+          self.send_message(event.target, random.choice(["Nobody likes Pwny anywa I MEAN HI PWNY I DID NOT SEE YOU THERE","Jesus christ no","DUCK AND COVER PEOPLE"]))
+        ### END Horseplay Custom Join/Part/Kick Messages ###  
         if event.command in ['PRIVMSG']:
           #Reload config and commands.
           if os.stat('config.json').st_mtime > self.lastloadconf:
